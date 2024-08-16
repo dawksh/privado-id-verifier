@@ -69,7 +69,7 @@ async function callback(req: any, res: any) {
     );
 
     const resolvers = {
-        ["polygon:amoy"]: ethStateResolver,
+        ["polygon:main"]: ethStateResolver,
     };
 
     // fetch authRequest from sessionID
