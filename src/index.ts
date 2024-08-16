@@ -17,15 +17,12 @@ async function getAuthRequest(req: any, res: any) {
     const sessionId = 1;
     const callbackURL = "/callback";
     const audience =
-        "did:polygonid:polygon:amoy:2qQ68JkRcf3xrHPQPWZei3YeVzHPP58wYNxx2mEouR";
+        "did:polygonid:polygon:main:2qQ68JkRcf3xrHPQPWZei3YeVzHPP58wYNxx2mEouR";
 
     const uri = `${hostUrl}${callbackURL}?sessionId=${sessionId}`;
 
     // Generate request for basic authentication
     const request = auth.createAuthorizationRequest("test flow", audience, uri);
-
-    request.id = "7f38a193-0918-4a48-9fac-36adfdb8b542";
-    request.thid = "7f38a193-0918-4a48-9fac-36adfdb8b542";
 
     // Add request for a specific proof
     const proofRequest = {
@@ -62,8 +59,8 @@ async function callback(req: any, res: any) {
     const tokenStr = raw.toString().trim();
     console.log(tokenStr);
 
-    const ethURL = "https://polygon-amoy.drpc.org";
-    const contractAddress = "0x1a4cC30f2aA0377b0c3bc9848766D90cb4404124";
+    const ethURL = "https://polygon.drpc.org";
+    const contractAddress = "0x624ce98D2d27b20b8f8d521723Df8fC4db71D79D";
     const keyDIR = "../keys";
 
     const ethStateResolver = new resolver.EthStateResolver(
@@ -86,10 +83,9 @@ async function callback(req: any, res: any) {
     });
 
     try {
-        authResponse = await verifier.fullVerify(tokenStr, authRequest, {
-            acceptedStateTransitionDelay: 5 * 60 * 1000
-        });
+        authResponse = await verifier.fullVerify(tokenStr, authRequest);
     } catch (error) {
+        console.log(error)
         return res.status(500).send(error);
     }
     console.log(authResponse)
